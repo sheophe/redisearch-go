@@ -29,7 +29,7 @@ func (i *Client) CreateIndex(indexName string, schema *Schema) (err error) {
 }
 
 // CreateIndexWithIndexDefinition configures the index and creates it on redis
-// IndexDefinition is used to define a index definition for automatic indexing on Hash update
+// IndexDefinition is used to define an index definition for automatic indexing on Hash update
 func (i *Client) CreateIndexWithIndexDefinition(indexName string, schema *Schema, definition *IndexDefinition) (err error) {
 	return i.indexWithDefinition(indexName, schema, definition)
 }

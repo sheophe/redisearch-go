@@ -20,7 +20,6 @@ func (it IndexType) String() string {
 // IndexInfo - Structure showing information about an existing index
 type IndexInfo struct {
 	Schema               Schema
-	Name                 string  `redis:"index_name"`
 	DocCount             uint64  `redis:"num_docs"`
 	RecordCount          uint64  `redis:"num_records"`
 	TermCount            uint64  `redis:"num_terms"`
