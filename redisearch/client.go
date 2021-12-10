@@ -15,8 +15,6 @@ type Client struct {
 	conn redis.Conn
 }
 
-var maxConns = 500
-
 // NewClient creates a new Client with the given connection
 func NewClient(conn redis.Conn) *Client {
 	ret := &Client{
@@ -26,13 +24,13 @@ func NewClient(conn redis.Conn) *Client {
 }
 
 // CreateIndex configures the index and creates it on redis
-func (i *Client) CreateIndex(schema *Schema, indexName string) (err error) {
+func (i *Client) CreateIndex(indexName string, schema *Schema) (err error) {
 	return i.indexWithDefinition(indexName, schema, nil)
 }
 
 // CreateIndexWithIndexDefinition configures the index and creates it on redis
 // IndexDefinition is used to define a index definition for automatic indexing on Hash update
-func (i *Client) CreateIndexWithIndexDefinition(schema *Schema, indexName string, definition *IndexDefinition) (err error) {
+func (i *Client) CreateIndexWithIndexDefinition(indexName string, schema *Schema, definition *IndexDefinition) (err error) {
 	return i.indexWithDefinition(indexName, schema, definition)
 }
 
