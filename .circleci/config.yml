@@ -54,7 +54,7 @@ jobs:
       - image: circleci/golang:1.16
       - image: redislabs/redisearch:latest
 
-    working_directory: /go/src/github.com/RediSearch/redisearch-go
+    working_directory: /go/src/github.com/sheophe/redisearch-go
     steps:
       - checkout
       - run: make get
@@ -69,7 +69,7 @@ jobs:
       - image: circleci/golang:1.16
       - image: redislabs/redisearch:1.6.15
 
-    working_directory: /go/src/github.com/RediSearch/redisearch-go
+    working_directory: /go/src/github.com/sheophe/redisearch-go
     steps:
       - checkout
       - run: make test
@@ -79,7 +79,7 @@ jobs:
       - image: circleci/golang:1.16
       - image: redislabs/redisearch:edge
 
-    working_directory: /go/src/github.com/RediSearch/redisearch-go
+    working_directory: /go/src/github.com/sheophe/redisearch-go
     steps:
       - checkout
       - run: make test

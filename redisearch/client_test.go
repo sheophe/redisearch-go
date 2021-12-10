@@ -11,9 +11,7 @@ import (
 )
 
 func flush(c *Client) (err error) {
-	conn := c.pool.Get()
-	defer conn.Close()
-	return conn.Send("FLUSHALL")
+	return c.conn.Send("FLUSHALL")
 }
 
 func teardown(c *Client) {
@@ -23,12 +21,10 @@ func teardown(c *Client) {
 // getRediSearchVersion returns RediSearch version by issuing "MODULE LIST" command
 // and iterating through the availabe modules up until "ft" is found as the name property
 func (c *Client) getRediSearchVersion() (version int64, err error) {
-	conn := c.pool.Get()
-	defer conn.Close()
 	var values []interface{}
 	var moduleInfo []interface{}
 	var moduleName string
-	values, err = redis.Values(conn.Do("MODULE", "LIST"))
+	values, err = redis.Values(c.conn.Do("MODULE", "LIST"))
 	if err != nil {
 		return
 	}
@@ -50,7 +46,8 @@ func (c *Client) getRediSearchVersion() (version int64, err error) {
 
 func TestClient_Get(t *testing.T) {
 
-	c := createClient("test-get")
+	indexName := "test-get"
+	c := createClient()
 	c.Drop()
 
 	sc := NewSchema(DefaultOptions).

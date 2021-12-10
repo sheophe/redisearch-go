@@ -2,11 +2,12 @@ package redisearch_test
 
 import (
 	"fmt"
-	"github.com/gomodule/redigo/redis"
 	"log"
 	"time"
 
-	"github.com/RediSearch/redisearch-go/redisearch"
+	"github.com/gomodule/redigo/redis"
+
+	"github.com/sheophe/redisearch-go/redisearch"
 )
 
 // exemplifies the CreateIndex function with a temporary index specification

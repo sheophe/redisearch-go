@@ -370,17 +370,13 @@ func (q *Query) SummarizeOptions(opts SummaryOptions) *Query {
 }
 
 // IndexOptions indexes multiple documents on the index, with optional Options passed to options
-func (i *Client) IndexOptions(opts IndexingOptions, docs ...Document) error {
-
-	conn := i.pool.Get()
-	defer conn.Close()
-
+func (i *Client) IndexOptions(indexName string, opts IndexingOptions, docs ...Document) error {
 	n := 0
 	var merr MultiError
 
 	for ii, doc := range docs {
 		args := make(redis.Args, 0, 6+len(doc.Properties))
-		args = append(args, i.name, doc.Id, doc.Score)
+		args = append(args, indexName, doc.Id, doc.Score)
 		args = SerializeIndexingOptions(opts, args)
 
 		if doc.Payload != nil {
@@ -393,7 +389,7 @@ func (i *Client) IndexOptions(opts IndexingOptions, docs ...Document) error {
 			args = append(args, k, f)
 		}
 
-		if err := conn.Send("FT.ADD", args...); err != nil {
+		if err := i.conn.Send("FT.ADD", args...); err != nil {
 			if merr == nil {
 				merr = NewMultiError(len(docs))
 			}
@@ -404,12 +400,12 @@ func (i *Client) IndexOptions(opts IndexingOptions, docs ...Document) error {
 		n++
 	}
 
-	if err := conn.Flush(); err != nil {
+	if err := i.conn.Flush(); err != nil {
 		return err
 	}
 
 	for n > 0 {
-		if _, err := conn.Receive(); err != nil {
+		if _, err := i.conn.Receive(); err != nil {
 			if merr == nil {
 				merr = NewMultiError(len(docs))
 			}
